@@ -12,7 +12,7 @@ SpaceWalk takes a floor plan image, uses AI to extract room data and materials, 
 
 ## User Flow
 
-1. **Upload** — User drops a floor plan image (PNG/JPG/PDF)
+1. **Upload** — User drops a floor plan image (PNG, JPG, or SVG). SVGs are rasterized to PNG via offscreen canvas before processing.
 2. **Processing** — AI analyzes the image:
    - Claude Vision extracts rooms (name, position, dimensions, materials)
    - Returns a confidence score for the extraction
@@ -29,7 +29,7 @@ SpaceWalk takes a floor plan image, uses AI to extract room data and materials, 
 ```
 src/
 ├── components/
-│   ├── UploadZone.tsx        — drag & drop, file validation (PNG/JPG/PDF)
+│   ├── UploadZone.tsx        — drag & drop, file validation (PNG/JPG/SVG), SVG→PNG rasterization
 │   ├── ProcessingView.tsx    — floor plan preview + scan animation + step progress
 │   ├── DollhouseView.tsx     — Three.js 3D model via @react-three/fiber
 │   ├── FloorPlanOverlay.tsx  — 2D fallback: hotspot zones over original image
@@ -64,7 +64,6 @@ interface Room {
   height: number;                // percentage
   dimensions: string;            // e.g., "5.5m × 5.0m"
   materials: Material[];
-  adjacentRooms: string[];       // room IDs
   renderUrl?: string;            // Pollinations result (loaded async)
   renderPrompt?: string;         // the prompt used to generate the render
 }
@@ -86,11 +85,11 @@ interface Material {
 
 ### 3D Dollhouse (Three.js)
 - Uses `@react-three/fiber` + `@react-three/drei` for React integration
-- Room positions from Claude (percentages) mapped to 3D coordinates
-- Walls: extruded rectangles with height proportional to room size
+- **Coordinate mapping**: Floor plan is a 100×100 world-unit grid. Room `x%` maps to `x` world units on X axis, `y%` maps to `-y` world units on Z axis (Three.js convention). Wall height is fixed at 8 world units for all rooms.
+- Walls: extruded rectangles (8 units tall)
 - Floors: planes textured/colored based on material data
 - OrbitControls for rotation, zoom, pan
-- Highlighted room (hover/click) gets an orange outline glow
+- Highlighted room (hover/click) gets a `#F0845C` (warm CTA) outline glow
 - Camera starts at a ~45° elevated angle looking down
 
 ### 2D Fallback
@@ -113,10 +112,10 @@ interface Material {
 - Renders load asynchronously — rooms show a skeleton/loading state, renders appear as they complete
 
 ### API Key Handling (Prototype)
-- Anthropic API key entered by user in a settings modal or stored in localStorage
-- No backend server — all API calls from browser
-- `.env` file with `VITE_ANTHROPIC_API_KEY` for dev convenience
-- Production version would use a backend proxy
+- Anthropic SDK initialized with `dangerouslyAllowBrowser: true` — acceptable for portfolio prototype, not for production
+- API key entered by user in a settings modal, stored in localStorage
+- `.env` file with `VITE_ANTHROPIC_API_KEY` for dev convenience (fallback if no localStorage key)
+- **Production upgrade path**: add a Vite dev proxy or minimal Express backend to avoid exposing the key
 
 ## App States
 
@@ -155,12 +154,13 @@ Three SVG floor plans in `test-plans/`:
 - `02-padel-club.svg` — 7 rooms, modeled after B'More Padel
 - `03-coworking-space.svg` — 9 rooms, complex multi-zone layout
 
+**Note**: SVG test files must be rasterized to PNG before sending to Claude Vision. The `UploadZone` component handles this automatically via offscreen canvas rendering.
+
 ## Out of Scope (v1)
 
 - Guided tour / auto-advance mode
 - Multiple angle renders per room
-- PDF parsing (beyond treating it as an image)
+- PDF upload (would require pdf.js for rasterization — add in v2 if needed)
 - User accounts / saving projects
-- Backend server
-- Real floor plan OCR (relying on Claude Vision)
+- Backend server (prototype uses `dangerouslyAllowBrowser`)
 - Furniture placement in 3D model (basic silhouettes only)
