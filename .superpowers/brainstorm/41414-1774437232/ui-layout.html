@@ -1,0 +1,207 @@
+<h2>App Layout — Three States</h2>
+<p class="subtitle">How the user flows through the app</p>
+
+<style>
+  .state-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #F0845C; margin-bottom: 12px; }
+  .app-mock { background: #08080A; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; margin-bottom: 32px; }
+  .app-nav { height: 48px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; padding: 0 20px; gap: 12px; }
+  .app-nav .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 14px; color: #eee; }
+  .app-nav .sep { color: rgba(255,255,255,0.2); }
+  .app-nav .breadcrumb { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .app-body { display: flex; min-height: 380px; }
+
+  /* State 1: Upload */
+  .upload-zone {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    border: 2px dashed rgba(255,255,255,0.1); margin: 40px; border-radius: 12px; cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .upload-icon { font-size: 48px; opacity: 0.3; }
+  .upload-text { font-size: 15px; color: rgba(255,255,255,0.5); }
+  .upload-sub { font-size: 12px; color: rgba(255,255,255,0.25); }
+  .upload-btn { padding: 10px 24px; background: #F0845C; color: #0A0A0B; font-size: 13px; font-weight: 600; border-radius: 8px; font-family: 'Space Grotesk', sans-serif; }
+
+  /* State 2: Processing */
+  .process-left { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; }
+  .process-img { width: 90%; height: 260px; background: rgba(255,255,255,0.03); border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .process-img-label { font-size: 12px; color: rgba(255,255,255,0.3); }
+  .scan-line { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #F0845C, transparent); animation: scan 2s ease-in-out infinite; }
+  @keyframes scan { 0% { top: 0; } 50% { top: calc(100% - 3px); } 100% { top: 0; } }
+  .process-right { width: 280px; border-left: 1px solid rgba(255,255,255,0.07); padding: 20px; }
+  .process-step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; }
+  .step-dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; margin-top: 2px; }
+  .step-done { background: rgba(16,185,129,0.15); color: #10B981; }
+  .step-active { background: rgba(240,132,92,0.15); color: #F0845C; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .step-pending { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.2); }
+  .step-text { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+  .step-text strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  /* State 3: Result */
+  .result-left { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .dollhouse-mock {
+    width: 320px; height: 200px; position: relative;
+    transform: perspective(600px) rotateX(45deg) rotateZ(-30deg);
+    transform-style: preserve-3d;
+  }
+  .dh-room { position: absolute; transform-style: preserve-3d; border: 1px solid rgba(255,255,255,0.15); }
+  .dh-room .dh-floor { width: 100%; height: 100%; position: absolute; }
+  .dh-room .dh-wall { position: absolute; top: 0; left: 0; width: 100%; height: 35px; transform-origin: top; transform: rotateX(-90deg); }
+  .dh-room .dh-wall-l { position: absolute; top: 0; left: 0; width: 35px; height: 100%; transform-origin: left; transform: rotateY(90deg); }
+  .dh-r1 { left: 0; top: 0; width: 190px; height: 120px; }
+  .dh-r1 .dh-floor { background: linear-gradient(135deg, #3d2b1a, #2a1f14); }
+  .dh-r1 .dh-wall { background: linear-gradient(180deg, #b09060, #8B7355); }
+  .dh-r1 .dh-wall-l { background: linear-gradient(180deg, #9a7a50, #7A6348); }
+  .dh-r2 { left: 190px; top: 0; width: 130px; height: 70px; }
+  .dh-r2 .dh-floor { background: #1a1a25; }
+  .dh-r2 .dh-wall { background: linear-gradient(180deg, #5a5a70, #4a4a60); }
+  .dh-r2 .dh-wall-l { background: #3a3a50; }
+  .dh-r3 { left: 190px; top: 70px; width: 130px; height: 50px; }
+  .dh-r3 .dh-floor { background: #152025; }
+  .dh-r3 .dh-wall { background: linear-gradient(180deg, #3a6070, #2a5060); }
+  .dh-r3 .dh-wall-l { background: #1a4050; }
+  .dh-r4 { left: 0; top: 120px; width: 320px; height: 80px; }
+  .dh-r4 .dh-floor { background: linear-gradient(135deg, #2a2014, #1f1a14); }
+  .dh-r4 .dh-wall-l { background: #5A4535; }
+  .dh-highlight { outline: 2px solid #F0845C; outline-offset: -1px; box-shadow: 0 0 20px rgba(240,132,92,0.3); }
+  .dh-room-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 8px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); white-space: nowrap; }
+
+  .result-panel { width: 320px; border-left: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; }
+  .panel-header { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .panel-header h3 { margin: 0 0 4px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: #eee; }
+  .panel-header .dims { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .panel-render { flex: 1; padding: 16px 20px; }
+  .render-placeholder {
+    width: 100%; height: 160px; border-radius: 8px; overflow: hidden;
+    background: linear-gradient(135deg, #2a1f14, #3d2b1a);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .render-inner {
+    width: 100%; height: 100%; position: relative;
+    background:
+      linear-gradient(180deg, rgba(180,140,90,0.3) 0%, transparent 40%),
+      linear-gradient(135deg, #1a1510 0%, #2a2015 50%, #1a1510 100%);
+  }
+  .render-wall { position: absolute; top: 0; left: 0; right: 0; height: 55%; background: linear-gradient(180deg, #8a7050, #6a5540); }
+  .render-floor-area { position: absolute; bottom: 0; left: 0; right: 0; height: 45%; background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0,0,0,0.08) 20px, rgba(0,0,0,0.08) 21px), linear-gradient(180deg, #5a3d22, #4a3018); }
+  .render-sofa { position: absolute; bottom: 48%; left: 20%; width: 35%; height: 12%; background: #4a3828; border-radius: 3px 3px 0 0; }
+  .render-light { position: absolute; top: 15%; left: 50%; width: 8px; height: 20px; background: linear-gradient(180deg, #d4a04a, #F0845C); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 30px rgba(240,132,92,0.4); }
+  .render-tag { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 3px 8px; border-radius: 4px; font-size: 9px; color: #F0845C; font-weight: 600; letter-spacing: 0.05em; }
+  .panel-materials { padding: 0 20px 16px; }
+  .mat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+  .mat-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; color: rgba(255,255,255,0.5); }
+  .mat-swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.1); }
+</style>
+
+<!-- STATE 1: Upload -->
+<div class="state-label">State 1 — Upload</div>
+<div class="app-mock">
+  <div class="app-nav">
+    <span class="logo">SpaceWalk</span>
+    <span class="sep">/</span>
+    <span class="breadcrumb">New Project</span>
+  </div>
+  <div class="app-body">
+    <div class="upload-zone">
+      <div class="upload-icon">📐</div>
+      <div class="upload-text">Drop your floor plan here</div>
+      <div class="upload-sub">PNG, JPG, or PDF — professional blueprints work best</div>
+      <div class="upload-btn">Choose File</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATE 2: Processing -->
+<div class="state-label">State 2 — AI Processing</div>
+<div class="app-mock">
+  <div class="app-nav">
+    <span class="logo">SpaceWalk</span>
+    <span class="sep">/</span>
+    <span class="breadcrumb">bmore-padel-lounge.png</span>
+  </div>
+  <div class="app-body">
+    <div class="process-left">
+      <div class="process-img">
+        <div class="scan-line"></div>
+        <div class="process-img-label">Analyzing floor plan...</div>
+      </div>
+    </div>
+    <div class="process-right">
+      <div class="process-step">
+        <div class="step-dot step-done">✓</div>
+        <div class="step-text"><strong>Image uploaded</strong><br>2.4 MB, 3200×2400px</div>
+      </div>
+      <div class="process-step">
+        <div class="step-dot step-done">✓</div>
+        <div class="step-text"><strong>Rooms detected</strong><br>6 rooms identified</div>
+      </div>
+      <div class="process-step">
+        <div class="step-dot step-active">⋯</div>
+        <div class="step-text"><strong>Extracting materials</strong><br>Reading spec annotations...</div>
+      </div>
+      <div class="process-step">
+        <div class="step-dot step-pending">4</div>
+        <div class="step-text"><strong>Building 3D model</strong></div>
+      </div>
+      <div class="process-step">
+        <div class="step-dot step-pending">5</div>
+        <div class="step-text"><strong>Rendering room views</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATE 3: Result -->
+<div class="state-label">State 3 — Explore (click room → see render)</div>
+<div class="app-mock">
+  <div class="app-nav">
+    <span class="logo">SpaceWalk</span>
+    <span class="sep">/</span>
+    <span class="breadcrumb">B'More Padel — Members Lounge</span>
+  </div>
+  <div class="app-body">
+    <div class="result-left">
+      <div class="dollhouse-mock">
+        <div class="dh-room dh-r1 dh-highlight">
+          <div class="dh-floor"></div><div class="dh-wall"></div><div class="dh-wall-l"></div>
+          <div class="dh-room-label">Reception</div>
+        </div>
+        <div class="dh-room dh-r2">
+          <div class="dh-floor"></div><div class="dh-wall"></div><div class="dh-wall-l"></div>
+          <div class="dh-room-label">Court View</div>
+        </div>
+        <div class="dh-room dh-r3">
+          <div class="dh-floor"></div><div class="dh-wall"></div><div class="dh-wall-l"></div>
+          <div class="dh-room-label">Wellness</div>
+        </div>
+        <div class="dh-room dh-r4">
+          <div class="dh-floor"></div><div class="dh-wall-l"></div>
+          <div class="dh-room-label">Lounge & Seating</div>
+        </div>
+      </div>
+    </div>
+    <div class="result-panel">
+      <div class="panel-header">
+        <h3>Reception & Waiting</h3>
+        <div class="dims">Rooms 100–101 · ~6m × 4m</div>
+      </div>
+      <div class="panel-render">
+        <div class="render-placeholder">
+          <div class="render-inner">
+            <div class="render-wall"></div>
+            <div class="render-floor-area"></div>
+            <div class="render-sofa"></div>
+            <div class="render-light"></div>
+          </div>
+          <div class="render-tag">AI Generated</div>
+        </div>
+      </div>
+      <div class="panel-materials">
+        <div class="mat-label">Materials</div>
+        <div class="mat-item"><div class="mat-swatch" style="background:#6B5540;"></div> Walnut vertical paneling</div>
+        <div class="mat-item"><div class="mat-swatch" style="background:#8a8a8a;"></div> Polished concrete floor</div>
+        <div class="mat-item"><div class="mat-swatch" style="background:#d4a04a;"></div> Brass pendant lighting</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<h2>What level of 3D should the dollhouse view be?</h2>
+<p class="subtitle">This determines the technical approach and visual complexity</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Styled 2.5D (Isometric)</h3>
+      <p>Elevated floor plan with colored walls, room labels, and material swatches. Think "The Sims" build mode. No true 3D camera — fixed isometric perspective. Fast to build, works on any device.</p>
+      <div style="margin-top:12px;padding:16px;background:rgba(255,255,255,0.03);border-radius:8px;font-family:monospace;font-size:12px;line-height:1.8;color:rgba(255,255,255,0.5);">
+        ┌─────────────┐<br>
+        │ ╱ LIVING ╱  │  ← walls have height/shadow<br>
+        │╱─────────╱  │  ← floor has material color<br>
+        │  ┌────┐     │<br>
+        │  │BATH│     │  ← rooms are labeled blocks<br>
+        │  └────┘     │<br>
+        └─────────────┘<br>
+        Fixed angle, no rotation
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>True 3D Dollhouse (Three.js)</h3>
+      <p>Fully rotatable 3D model with extruded walls, textured floors, and basic furniture silhouettes. Orbit controls to spin/zoom. Like a Matterport dollhouse but simpler. Medium complexity.</p>
+      <div style="margin-top:12px;padding:16px;background:rgba(255,255,255,0.03);border-radius:8px;font-family:monospace;font-size:12px;line-height:1.8;color:rgba(255,255,255,0.5);">
+        ╱‾‾‾‾‾‾‾‾‾‾‾╲<br>
+        │  LIVING     │  ← 3D extruded walls<br>
+        │  ▪ ▪ ▪      │  ← basic furniture shapes<br>
+        │  ┌────┐     │  ← textured floors<br>
+        │  │BATH│     │<br>
+        ╲___________╱<br>
+        🔄 Orbit / zoom / pan
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>AI-Enhanced 3D</h3>
+      <p>Same as B, but AI generates realistic textures for walls/floors based on the materials list (e.g., "walnut paneling" → actual wood texture). Higher wow factor, but depends on AI image generation quality and adds latency.</p>
+      <div style="margin-top:12px;padding:16px;background:rgba(255,255,255,0.03);border-radius:8px;font-family:monospace;font-size:12px;line-height:1.8;color:rgba(255,255,255,0.5);">
+        Same as B but with:<br>
+        🎨 AI-generated wall textures<br>
+        🪵 Realistic floor materials<br>
+        💡 Ambient lighting per room<br>
+        ⏳ +5-15s generation time
+      </div>
+    </div>
+  </div>
+</div>

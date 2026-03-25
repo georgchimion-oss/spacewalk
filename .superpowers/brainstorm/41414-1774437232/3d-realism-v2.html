@@ -1,0 +1,352 @@
+<h2>What level of 3D should the dollhouse view be?</h2>
+<p class="subtitle">Click to select — each card shows a visual approximation of the rendering style</p>
+
+<style>
+  .demo-cards { display: grid; grid-template-columns: 1fr; gap: 28px; max-width: 800px; margin: 0 auto; }
+  .demo-card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; overflow: hidden; cursor: pointer; transition: all 0.3s;
+  }
+  .demo-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+  .demo-card.selected { border-color: #F0845C; box-shadow: 0 0 20px rgba(240,132,92,0.15); }
+  .demo-card .demo-visual { height: 320px; position: relative; overflow: hidden; }
+  .demo-card .demo-info { padding: 20px; }
+  .demo-card .demo-info h3 { margin: 0 0 6px; font-family: 'Space Grotesk', sans-serif; font-size: 18px; }
+  .demo-card .demo-info p { margin: 0; color: rgba(255,255,255,0.5); font-size: 14px; line-height: 1.5; }
+  .demo-label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #F0845C; }
+
+  /* === OPTION A: Isometric 2.5D === */
+  .iso-scene { width: 100%; height: 100%; background: #0a0a0f; display: flex; align-items: center; justify-content: center; }
+  .iso-floor {
+    width: 400px; height: 250px; position: relative;
+    transform: rotateX(55deg) rotateZ(-45deg);
+    transform-style: preserve-3d;
+  }
+  .iso-room {
+    position: absolute; border: 2px solid rgba(255,255,255,0.3);
+    transform-style: preserve-3d;
+  }
+  .iso-room .floor { width: 100%; height: 100%; position: absolute; }
+  .iso-room .wall-back {
+    position: absolute; top: 0; left: 0; width: 100%; height: 40px;
+    transform-origin: top; transform: rotateX(-90deg);
+  }
+  .iso-room .wall-left {
+    position: absolute; top: 0; left: 0; width: 40px; height: 100%;
+    transform-origin: left; transform: rotateY(90deg);
+  }
+  .iso-room .room-label {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); white-space: nowrap;
+  }
+  /* Living room */
+  .iso-living { left: 0; top: 0; width: 240px; height: 160px; }
+  .iso-living .floor { background: #2a1f14; }
+  .iso-living .wall-back { background: #8B7355; }
+  .iso-living .wall-left { background: #7A6348; }
+  /* Kitchen */
+  .iso-kitchen { left: 240px; top: 0; width: 160px; height: 100px; }
+  .iso-kitchen .floor { background: #1a1a20; }
+  .iso-kitchen .wall-back { background: #4a4a55; }
+  .iso-kitchen .wall-left { background: #3a3a45; }
+  /* Bathroom */
+  .iso-bath { left: 240px; top: 100px; width: 160px; height: 60px; }
+  .iso-bath .floor { background: #1a2025; }
+  .iso-bath .wall-back { background: #2a4a55; }
+  .iso-bath .wall-left { background: #1a3a45; }
+  /* Bedroom */
+  .iso-bedroom { left: 0; top: 160px; width: 240px; height: 90px; }
+  .iso-bedroom .floor { background: #1f1a14; }
+  .iso-bedroom .wall-back { background: #6B5540; }
+  .iso-bedroom .wall-left { background: #5A4535; }
+
+  /* === OPTION B: True 3D === */
+  .three-scene { width: 100%; height: 100%; background: #08080f; display: flex; align-items: center; justify-content: center; perspective: 800px; }
+  .three-model {
+    width: 350px; height: 220px; position: relative;
+    transform: rotateX(50deg) rotateZ(-30deg) scale(0.9);
+    transform-style: preserve-3d;
+    animation: gentleRotate 12s ease-in-out infinite;
+  }
+  @keyframes gentleRotate {
+    0%, 100% { transform: rotateX(50deg) rotateZ(-30deg) scale(0.9); }
+    50% { transform: rotateX(50deg) rotateZ(-40deg) scale(0.9); }
+  }
+  .three-room {
+    position: absolute; transform-style: preserve-3d;
+  }
+  .three-room .t-floor { width: 100%; height: 100%; position: absolute; }
+  .three-room .t-wall-back {
+    position: absolute; top: 0; left: 0; width: 100%; height: 55px;
+    transform-origin: top; transform: rotateX(-90deg);
+  }
+  .three-room .t-wall-left {
+    position: absolute; top: 0; left: 0; width: 55px; height: 100%;
+    transform-origin: left; transform: rotateY(90deg);
+  }
+  .three-room .t-wall-right {
+    position: absolute; top: 0; right: 0; width: 55px; height: 100%;
+    transform-origin: right; transform: rotateY(-90deg);
+  }
+  .three-room .t-wall-front {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 55px;
+    transform-origin: bottom; transform: rotateX(90deg);
+  }
+  /* Rooms with gradients for realism */
+  .t-living { left: 0; top: 0; width: 210px; height: 140px; }
+  .t-living .t-floor { background: linear-gradient(135deg, #3d2b1a, #2a1f14, #3d2b1a); }
+  .t-living .t-wall-back { background: linear-gradient(180deg, #a08868, #8B7355); }
+  .t-living .t-wall-left { background: linear-gradient(180deg, #907858, #7A6348); }
+  .t-living .t-wall-right { background: linear-gradient(180deg, #907858, #7A6348); opacity: 0.6; }
+  .t-kitchen { left: 210px; top: 0; width: 140px; height: 90px; }
+  .t-kitchen .t-floor { background: linear-gradient(135deg, #252530, #1a1a25, #252530); }
+  .t-kitchen .t-wall-back { background: linear-gradient(180deg, #5a5a70, #4a4a60); }
+  .t-kitchen .t-wall-left { background: linear-gradient(180deg, #4a4a60, #3a3a50); }
+  .t-bath { left: 210px; top: 90px; width: 140px; height: 50px; }
+  .t-bath .t-floor { background: linear-gradient(135deg, #1a2530, #152025, #1a2530); }
+  .t-bath .t-wall-back { background: linear-gradient(180deg, #3a6070, #2a5060); }
+  .t-bath .t-wall-left { background: linear-gradient(180deg, #2a5060, #1a4050); }
+  .t-bedroom { left: 0; top: 140px; width: 350px; height: 80px; }
+  .t-bedroom .t-floor { background: linear-gradient(135deg, #2a2014, #1f1a14, #2a2014); }
+  .t-bedroom .t-wall-left { background: linear-gradient(180deg, #6B5540, #5A4535); }
+  .t-bedroom .t-wall-front { background: linear-gradient(180deg, #5A4535, #4A3525); }
+  /* Furniture shapes */
+  .furniture {
+    position: absolute; transform-style: preserve-3d;
+  }
+  .furn-sofa {
+    width: 60px; height: 25px; background: #4a3a2a; border-radius: 3px;
+    bottom: 20px; left: 30px; box-shadow: 0 -8px 0 #5a4a3a;
+  }
+  .furn-table {
+    width: 30px; height: 30px; background: #3a3025; border-radius: 50%;
+    bottom: 50px; left: 110px;
+  }
+  .furn-counter {
+    width: 80px; height: 12px; background: #3a3a45;
+    top: 15px; right: 15px; border-radius: 2px;
+  }
+  .furn-bed {
+    width: 50px; height: 35px; background: #35302a; border-radius: 3px;
+    top: 15px; left: 20px;
+  }
+  .orbit-hint {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+    padding: 6px 14px; border-radius: 20px; font-size: 11px; color: rgba(255,255,255,0.5);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .orbit-icon { animation: spin 4s linear infinite; display: inline-block; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* === OPTION C: AI-Enhanced === */
+  .ai-scene { width: 100%; height: 100%; background: #08080f; display: flex; align-items: center; justify-content: center; perspective: 800px; position: relative; }
+  .ai-model {
+    width: 350px; height: 220px; position: relative;
+    transform: rotateX(50deg) rotateZ(-35deg) scale(0.9);
+    transform-style: preserve-3d;
+    animation: gentleRotate2 12s ease-in-out infinite;
+  }
+  @keyframes gentleRotate2 {
+    0%, 100% { transform: rotateX(50deg) rotateZ(-35deg) scale(0.9); }
+    50% { transform: rotateX(50deg) rotateZ(-45deg) scale(0.9); }
+  }
+  .ai-room { position: absolute; transform-style: preserve-3d; }
+  .ai-room .a-floor { width: 100%; height: 100%; position: absolute; }
+  .ai-room .a-wall-back {
+    position: absolute; top: 0; left: 0; width: 100%; height: 55px;
+    transform-origin: top; transform: rotateX(-90deg);
+  }
+  .ai-room .a-wall-left {
+    position: absolute; top: 0; left: 0; width: 55px; height: 100%;
+    transform-origin: left; transform: rotateY(90deg);
+  }
+  /* Wood grain texture via repeating gradients */
+  .a-living { left: 0; top: 0; width: 210px; height: 140px; }
+  .a-living .a-floor {
+    background:
+      repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(0,0,0,0.1) 8px, rgba(0,0,0,0.1) 9px),
+      linear-gradient(135deg, #5a3d20, #4a3018, #5a3d20, #4a3018);
+  }
+  .a-living .a-wall-back {
+    background:
+      repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(0,0,0,0.08) 12px, rgba(0,0,0,0.08) 13px),
+      linear-gradient(180deg, #c4a87a, #b09060);
+  }
+  .a-living .a-wall-left {
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(0,0,0,0.08) 12px, rgba(0,0,0,0.08) 13px),
+      linear-gradient(180deg, #b09060, #9a7a50);
+  }
+  /* Marble-like for kitchen */
+  .a-kitchen { left: 210px; top: 0; width: 140px; height: 90px; }
+  .a-kitchen .a-floor {
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 30%, rgba(255,255,255,0.03) 0%, transparent 40%),
+      linear-gradient(135deg, #e8e4e0, #d8d4d0, #e8e4e0);
+  }
+  .a-kitchen .a-wall-back { background: linear-gradient(180deg, #f0ece8, #e0dcd8); }
+  .a-kitchen .a-wall-left { background: linear-gradient(180deg, #e0dcd8, #d0ccc8); }
+  /* Tile for bathroom */
+  .a-bath { left: 210px; top: 90px; width: 140px; height: 50px; }
+  .a-bath .a-floor {
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 14px, rgba(255,255,255,0.1) 14px, rgba(255,255,255,0.1) 15px),
+      repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(255,255,255,0.1) 14px, rgba(255,255,255,0.1) 15px),
+      #2a4a55;
+  }
+  .a-bath .a-wall-back {
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 10px, rgba(255,255,255,0.08) 10px, rgba(255,255,255,0.08) 11px),
+      repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(255,255,255,0.08) 10px, rgba(255,255,255,0.08) 11px),
+      linear-gradient(180deg, #4a7a88, #3a6a78);
+  }
+  .a-bath .a-wall-left { background: linear-gradient(180deg, #3a6a78, #2a5a68); }
+  /* Carpet for bedroom */
+  .a-bedroom { left: 0; top: 140px; width: 350px; height: 80px; }
+  .a-bedroom .a-floor {
+    background:
+      radial-gradient(circle at 10% 50%, rgba(255,255,255,0.02) 0%, transparent 30%),
+      radial-gradient(circle at 90% 30%, rgba(255,255,255,0.02) 0%, transparent 30%),
+      linear-gradient(135deg, #3a3028, #2a2520, #3a3028);
+  }
+  .a-bedroom .a-wall-left { background: linear-gradient(180deg, #8a7560, #7a6550); }
+
+  .ai-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(circle at 30% 40%, rgba(240,132,92,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(0,210,200,0.04) 0%, transparent 40%);
+  }
+  .ai-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: linear-gradient(135deg, rgba(240,132,92,0.15), rgba(0,210,200,0.15));
+    border: 1px solid rgba(240,132,92,0.3);
+    padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase; color: #F0845C;
+  }
+</style>
+
+<div class="demo-cards">
+  <!-- Option A: Isometric 2.5D -->
+  <div class="demo-card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="demo-visual">
+      <div class="iso-scene">
+        <div class="iso-floor">
+          <div class="iso-room iso-living">
+            <div class="floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">RECEPTION</div>
+          </div>
+          <div class="iso-room iso-kitchen">
+            <div class="floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">PADEL COURT</div>
+          </div>
+          <div class="iso-room iso-bath">
+            <div class="floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">WELLNESS</div>
+          </div>
+          <div class="iso-room iso-bedroom">
+            <div class="floor"></div>
+            <div class="wall-back"></div>
+            <div class="wall-left"></div>
+            <div class="room-label">LOUNGE</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-label">A — Isometric 2.5D</div>
+    </div>
+    <div class="demo-info">
+      <h3>Styled 2.5D (Isometric)</h3>
+      <p>Elevated floor plan with colored walls and material swatches. Fixed perspective — no camera rotation. Fast to build, works everywhere. Think "The Sims" build mode.</p>
+    </div>
+  </div>
+
+  <!-- Option B: True 3D -->
+  <div class="demo-card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="demo-visual">
+      <div class="three-scene">
+        <div class="three-model">
+          <div class="three-room t-living">
+            <div class="t-floor"></div>
+            <div class="t-wall-back"></div>
+            <div class="t-wall-left"></div>
+            <div class="t-wall-right"></div>
+            <div class="furniture furn-sofa"></div>
+            <div class="furniture furn-table"></div>
+          </div>
+          <div class="three-room t-kitchen">
+            <div class="t-floor"></div>
+            <div class="t-wall-back"></div>
+            <div class="t-wall-left"></div>
+            <div class="furniture furn-counter"></div>
+          </div>
+          <div class="three-room t-bath">
+            <div class="t-floor"></div>
+            <div class="t-wall-back"></div>
+            <div class="t-wall-left"></div>
+          </div>
+          <div class="three-room t-bedroom">
+            <div class="t-floor"></div>
+            <div class="t-wall-left"></div>
+            <div class="t-wall-front"></div>
+            <div class="furniture furn-bed"></div>
+          </div>
+        </div>
+        <div class="orbit-hint"><span class="orbit-icon">&#x21BB;</span> Orbit / zoom / pan</div>
+      </div>
+      <div class="demo-label">B — True 3D Dollhouse</div>
+    </div>
+    <div class="demo-info">
+      <h3>True 3D Dollhouse (Three.js)</h3>
+      <p>Fully rotatable 3D model with extruded walls, flat-colored floors, and basic furniture silhouettes. Orbit controls to spin, zoom, and pan. Like Matterport but simpler.</p>
+    </div>
+  </div>
+
+  <!-- Option C: AI-Enhanced 3D -->
+  <div class="demo-card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="demo-visual">
+      <div class="ai-scene">
+        <div class="ai-model">
+          <div class="ai-room a-living">
+            <div class="a-floor"></div>
+            <div class="a-wall-back"></div>
+            <div class="a-wall-left"></div>
+            <div class="furniture furn-sofa" style="background:#5a4a38;box-shadow:0 -8px 0 #6a5a48;"></div>
+            <div class="furniture furn-table" style="background:#4a3a2a;"></div>
+          </div>
+          <div class="ai-room a-kitchen">
+            <div class="a-floor"></div>
+            <div class="a-wall-back"></div>
+            <div class="a-wall-left"></div>
+            <div class="furniture furn-counter" style="background:#c0bab0;"></div>
+          </div>
+          <div class="ai-room a-bath">
+            <div class="a-floor"></div>
+            <div class="a-wall-back"></div>
+            <div class="a-wall-left"></div>
+          </div>
+          <div class="ai-room a-bedroom">
+            <div class="a-floor"></div>
+            <div class="a-wall-left"></div>
+            <div class="furniture furn-bed" style="background:#4a4038;"></div>
+          </div>
+        </div>
+        <div class="ai-glow"></div>
+        <div class="ai-badge">AI Textures</div>
+        <div class="orbit-hint"><span class="orbit-icon">&#x21BB;</span> Orbit / zoom / pan</div>
+      </div>
+      <div class="demo-label">C — AI-Enhanced 3D</div>
+    </div>
+    <div class="demo-info">
+      <h3>AI-Enhanced 3D</h3>
+      <p>Same 3D model, but AI generates realistic textures — wood grain floors, marble counters, tiled bathrooms — based on the materials spec. Higher wow factor, adds 5-15s generation time.</p>
+    </div>
+  </div>
+</div>
