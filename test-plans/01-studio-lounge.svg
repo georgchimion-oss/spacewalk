@@ -1,0 +1,49 @@
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="background:#0a1628">
+  <defs>
+    <pattern id="grid1" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1a3a5c" stroke-width="0.3"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="400" fill="url(#grid1)" opacity="0.5"/>
+  <rect x="40" y="40" width="520" height="320" fill="none" stroke="#4a8abf" stroke-width="3"/>
+  <rect x="40" y="40" width="200" height="140" fill="rgba(74,138,191,0.05)" stroke="#4a8abf" stroke-width="2"/>
+  <text x="140" y="105" text-anchor="middle" fill="#4a8abf" font-family="monospace" font-size="11" font-weight="bold">RECEPTION</text>
+  <text x="140" y="120" text-anchor="middle" fill="#3a6a8f" font-family="monospace" font-size="8">5.0m × 3.5m</text>
+  <text x="140" y="135" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="7">Marble tile floor</text>
+  <line x1="100" y1="40" x2="160" y2="40" stroke="#0a1628" stroke-width="4"/>
+  <path d="M 100 40 Q 130 10 160 40" fill="none" stroke="#4a8abf" stroke-width="1" stroke-dasharray="3"/>
+  <rect x="240" y="40" width="320" height="200" fill="rgba(74,138,191,0.05)" stroke="#4a8abf" stroke-width="2"/>
+  <text x="400" y="130" text-anchor="middle" fill="#4a8abf" font-family="monospace" font-size="11" font-weight="bold">MAIN LOUNGE</text>
+  <text x="400" y="145" text-anchor="middle" fill="#3a6a8f" font-family="monospace" font-size="8">8.0m × 5.0m</text>
+  <text x="400" y="160" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="7">Walnut hardwood floor</text>
+  <text x="400" y="170" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="7">Leather seating · Brass fixtures</text>
+  <rect x="270" y="80" width="80" height="30" rx="4" fill="none" stroke="#2a5a7f" stroke-width="1" stroke-dasharray="4"/>
+  <text x="310" y="99" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="6">SOFA</text>
+  <rect x="460" y="80" width="80" height="30" rx="4" fill="none" stroke="#2a5a7f" stroke-width="1" stroke-dasharray="4"/>
+  <text x="500" y="99" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="6">SOFA</text>
+  <circle cx="400" cy="120" r="20" fill="none" stroke="#2a5a7f" stroke-width="1" stroke-dasharray="4"/>
+  <text x="400" y="123" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="6">TABLE</text>
+  <line x1="240" y1="80" x2="240" y2="140" stroke="#0a1628" stroke-width="4"/>
+  <rect x="40" y="180" width="200" height="180" fill="rgba(74,138,191,0.05)" stroke="#4a8abf" stroke-width="2"/>
+  <text x="140" y="265" text-anchor="middle" fill="#4a8abf" font-family="monospace" font-size="11" font-weight="bold">BAR AREA</text>
+  <text x="140" y="280" text-anchor="middle" fill="#3a6a8f" font-family="monospace" font-size="8">5.0m × 4.5m</text>
+  <text x="140" y="295" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="7">Terrazzo floor · Oak bar top</text>
+  <path d="M 60 210 L 60 320 L 180 320" fill="none" stroke="#4a8abf" stroke-width="2.5"/>
+  <text x="100" y="310" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="6">BAR COUNTER</text>
+  <rect x="240" y="240" width="160" height="120" fill="rgba(74,138,191,0.05)" stroke="#4a8abf" stroke-width="2"/>
+  <text x="320" y="295" text-anchor="middle" fill="#4a8abf" font-family="monospace" font-size="11" font-weight="bold">RESTROOM</text>
+  <text x="320" y="310" text-anchor="middle" fill="#3a6a8f" font-family="monospace" font-size="8">4.0m × 3.0m</text>
+  <text x="320" y="325" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="7">Porcelain tile · Chrome fixtures</text>
+  <!-- Legend -->
+  <rect x="420" y="260" width="130" height="90" fill="rgba(10,22,40,0.8)" stroke="#1a3a5c" stroke-width="1"/>
+  <text x="435" y="278" fill="#4a8abf" font-family="monospace" font-size="7" font-weight="bold">MATERIALS</text>
+  <rect x="435" y="286" width="8" height="8" fill="#d4c4a8"/><text x="448" y="294" fill="#3a6a8f" font-family="monospace" font-size="6">Marble tile</text>
+  <rect x="435" y="300" width="8" height="8" fill="#6B5540"/><text x="448" y="308" fill="#3a6a8f" font-family="monospace" font-size="6">Walnut hardwood</text>
+  <rect x="435" y="314" width="8" height="8" fill="#8a8a8a"/><text x="448" y="322" fill="#3a6a8f" font-family="monospace" font-size="6">Terrazzo</text>
+  <rect x="435" y="328" width="8" height="8" fill="#e0e0e0"/><text x="448" y="336" fill="#3a6a8f" font-family="monospace" font-size="6">Porcelain tile</text>
+  <!-- Title block -->
+  <rect x="430" y="355" width="125" height="40" fill="rgba(10,22,40,0.8)" stroke="#1a3a5c" stroke-width="1"/>
+  <text x="492" y="370" text-anchor="middle" fill="#4a8abf" font-family="monospace" font-size="7">STUDIO LOUNGE</text>
+  <text x="492" y="382" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="6">Scale 1:100 · Rev A</text>
+  <text x="492" y="392" text-anchor="middle" fill="#2a5a7f" font-family="monospace" font-size="6">4 rooms</text>
+</svg>
